@@ -126,7 +126,7 @@ function calculate(type = "integer") {
 
   // Print results
 
-  // console.table(result);
+  console.table(result);
   console.log(
     `Integer matrix multiplication took ${
       averageTime / 1000
