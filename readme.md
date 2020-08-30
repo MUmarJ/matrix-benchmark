@@ -2,7 +2,7 @@
 
 ---
 
-A benchmark for performance comparison between matrices based on integers or double floats.
+A benchmark for performance comparison between with randomized matrices (0~100) based on integers or double floats.
 
 Originally created for CS402 HW by Muhammad Umar
 
