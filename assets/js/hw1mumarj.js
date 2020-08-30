@@ -148,7 +148,7 @@ function calculate(type = "integer") {
 const insertResultsText = (selector, averageTime, totalTime, benchmarkRuns) => {
   const resultsText = document.getElementById(selector);
 
-  resultsText.innerHTML = `Integer matrix multiplication took <b>${
+  resultsText.innerHTML = `Matrix multiplication took <b>${
     averageTime / 1000
   }s on average</b>
   <br>
