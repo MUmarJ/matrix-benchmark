@@ -80,6 +80,8 @@ function calculate(type = "integer") {
   const benchmarkRuns = Number(
     document.getElementById("benchmark-runs").value || 1
   );
+  const innerLoop =
+    document.forms.algorithm.elements.approach.value || "column";
   // const benchmarkRuns = 2;
 
   // Generate matrices
@@ -111,7 +113,7 @@ function calculate(type = "integer") {
 
     // Multiply integer matrices and measure
     const timeStart = performance.now();
-    result = multiplyMatrices(matrixA, matrixB, "row");
+    result = multiplyMatrices(matrixA, matrixB, innerLoop);
     const timeEnd = performance.now();
 
     //Sum time taken for each run
@@ -132,29 +134,41 @@ function calculate(type = "integer") {
       averageTime / 1000
     }s on average while the total time taken for ${benchmarkRuns} runs was ${
       totalTime / 1000
-    }s`
+    }s using ${innerLoop} approach.`
   );
 
   // HTML operations
   const selector = real ? "real-results" : "integer-results";
 
-  insertResultsText(`${selector}-text`, averageTime, totalTime, benchmarkRuns);
+  insertResultsText(
+    `${selector}-text`,
+    averageTime,
+    totalTime,
+    benchmarkRuns,
+    innerLoop
+  );
   insertBenchmarkTableBody(`${selector}-table-body`, timeArray, benchmarkRuns);
 
   return false;
 }
 
 // HTML functions
-const insertResultsText = (selector, averageTime, totalTime, benchmarkRuns) => {
+const insertResultsText = (
+  selector,
+  averageTime,
+  totalTime,
+  benchmarkRuns,
+  innerLoop
+) => {
   const resultsText = document.getElementById(selector);
 
   resultsText.innerHTML = `Matrix multiplication took <b>${
     averageTime / 1000
-  }s on average</b>
+  }s on average</b>.
   <br>
   Total time taken for <u>${benchmarkRuns} runs</u> was <b>${
     totalTime / 1000
-  }s</b>`;
+  }s</b> using ${innerLoop} approach.`;
 };
 
 const insertBenchmarkTableBody = (selector, timeArray, benchmarkRuns) => {

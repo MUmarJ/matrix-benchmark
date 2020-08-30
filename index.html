@@ -27,7 +27,7 @@
     <div class="container">
       <div class="grid">
         <div class="row">
-          <div class="col-sm test-card">
+          <div class="col-sm test-card d-flex align-items-stretch">
             <div class="card text-center">
               <div class="card-header">Integer Matrices Multiplication</div>
               <div class="card-body">
@@ -36,7 +36,8 @@
                   containing any fractions.
                 </p>
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Benchmark runs</label>
+                  <br />
+                  <label>Benchmark runs</label>
                   <input
                     type="number"
                     class="form-control"
@@ -44,9 +45,31 @@
                     value="1"
                   />
                 </div>
+                <br />
+                <p>Inner loop alogrithm approach?</p>
+                <form class="mt-3" name="algorithm">
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="approach"
+                    id="option1"
+                    value="column"
+                    checked
+                  />
+                  <label class="form-check-label" for="option1">column</label>
+                  <input
+                    type="radio"
+                    class="form-check-input"
+                    name="approach"
+                    id="option2"
+                    value="row"
+                  />
+                  <label class="form-check-label" for="option2">row</label>
+                </form>
+                <br />
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary my-2"
                   onclick="calculate()"
                 >
                   Submit
@@ -54,7 +77,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm test-card">
+          <div class="col-sm test-card d-flex align-items-stretch">
             <div class="card text-center">
               <div class="card-header">Float Matrices Multiplication</div>
               <div class="card-body">
@@ -64,6 +87,8 @@
                 </p>
                 <form>
                   <div class="form-group">
+                    <br />
+                    <br />
                     <label for="exampleInputEmail1">Benchmark runs</label>
                     <input
                       type="number"
@@ -72,9 +97,31 @@
                       value="1"
                     />
                   </div>
+                  <br />
+                  <p>Inner loop alogrithm approach?</p>
+                  <form class="mt-3" name="algorithm">
+                    <input
+                      type="radio"
+                      class="form-check-input"
+                      name="approach"
+                      id="option1"
+                      value="column"
+                      checked
+                    />
+                    <label class="form-check-label" for="option1">column</label>
+                    <input
+                      type="radio"
+                      class="form-check-input"
+                      name="approach"
+                      id="option2"
+                      value="row"
+                    />
+                    <label class="form-check-label" for="option2">row</label>
+                  </form>
+                  <br />
                   <button
                     type="button"
-                    class="btn btn-primary"
+                    class="btn btn-primary my-2"
                     onclick="calculate('real')"
                   >
                     Submit
@@ -115,7 +162,8 @@
                 <tbody id="real-results-table-body"></tbody>
               </table>
               <p id="real-results-text">
-                Real Matrice Multiplication will be displayed here
+                Real numbers Matrice Multiplication results will be displayed
+                here
               </p>
             </div>
           </div>
