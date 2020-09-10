@@ -146,12 +146,13 @@ function calculate(type = "integer") {
     totalTime += timeTaken;
     insertBenchmarkRow(tableBody, run, timeTaken);
   }
+  // Enable submit buttons
+  removeAttribute(".submit-results", "disabled");
 
   // Calculate time taken in ms
   const averageTime = totalTime / benchmarkRuns;
 
   // Print results
-
   // console.table(result);
   console.log(
     `Integer matrix multiplication took ${
@@ -168,8 +169,6 @@ function calculate(type = "integer") {
     benchmarkRuns,
     innerLoop
   );
-  // Enable submit buttons
-  removeAttribute(".submit-results", "disabled");
 }
 
 // HTML functions
@@ -195,7 +194,6 @@ const insertBenchmarkRow = (tableBody, run, time) => {
   // Insert a row in the table at the last row
   const newRow = tableBody.insertRow();
   newRow.innerHTML = `<td>${run + 1}</td><td>${time / 1000}s</td>`;
-  resolve();
 };
 
 // calculate();
