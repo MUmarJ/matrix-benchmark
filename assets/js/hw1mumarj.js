@@ -14,14 +14,16 @@ const randomizeMatrix = (matrix, real = false) => {
   for (let row = 0; row < rows; row++) {
     const columns = matrix[row].length;
     for (let column = 0; column < columns; column++) {
-      const randomNumber = Math.random() * 100;
-      matrix[row][column] = real ? randomNumber : Math.floor(randomNumber);
+      const randomNumber = real
+        ? BigInt(Math.floor(Math.random() * 100))
+        : Math.random() * 100;
+      matrix[row][column] = randomNumber;
     }
   }
   return matrix;
 };
 
-const multiplyMatrices = (matrixA, matrixB, innerLoop = "column") => {
+const multiplyMatrices = (matrixA, matrixB, real, innerLoop = "column") => {
   // rA x cA * rB x cB -> rA x cB
   // 2 x 3 * 3 x 2 = 2 x 2
   const rowsA = matrixA.length;
@@ -29,6 +31,8 @@ const multiplyMatrices = (matrixA, matrixB, innerLoop = "column") => {
 
   const rowsB = matrixB.length;
   const columnsB = matrixB[0].length;
+
+  let sum = real ? 0n : 0;
 
   // Prepare matrix of new size
   const resultantMatrix = createMatrix(rowsA, columnsB);
@@ -38,7 +42,6 @@ const multiplyMatrices = (matrixA, matrixB, innerLoop = "column") => {
     case "row":
       for (let row = 0; row < rowsA; row++) {
         for (let column = 0; column < columnsB; column++) {
-          let sum = 0;
           for (let index = 0; index < rowsB; index++) {
             const firstValue = matrixA[row][index];
             const secondValue = matrixB[index][column];
@@ -53,7 +56,6 @@ const multiplyMatrices = (matrixA, matrixB, innerLoop = "column") => {
     default:
       for (let row = 0; row < rowsA; row++) {
         for (let column = 0; column < columnsB; column++) {
-          let sum = 0;
           for (let index = 0; index < columnsA; index++) {
             const firstValue = matrixA[row][index];
             const secondValue = matrixB[index][column];
@@ -67,7 +69,24 @@ const multiplyMatrices = (matrixA, matrixB, innerLoop = "column") => {
   return resultantMatrix;
 };
 
+const setElement = (selector, attribute, val) => {
+  elements = document.querySelectorAll(selector);
+  elements.forEach((element) => {
+    element.setAttribute(attribute, val);
+  });
+};
+
+const removeAttribute = (selector, attribute) => {
+  elements = document.querySelectorAll(selector);
+  elements.forEach((element) => {
+    element.removeAttribute(attribute);
+  });
+};
+
 function calculate(type = "integer") {
+  // Disable submit buttons
+  setElement(".submit-results", "disabled", true);
+
   // Matrix constants
   const rowsmatrixA = 400;
   const columnsmatrixA = 600;
@@ -103,8 +122,13 @@ function calculate(type = "integer") {
   // console.table(matrixB);
 
   let totalTime = 0;
-  let result;
-  const timeArray = new Array(benchmarkRuns);
+
+  // Table Selector
+  const selector = real ? "real-results" : "integer-results";
+  const tableBody = document.getElementById(`${selector}-table-body`);
+
+  // Clear table body
+  tableBody.innerHTML = "";
 
   for (let run = 0; run < benchmarkRuns; run++) {
     // Randomize matrices
@@ -113,14 +137,14 @@ function calculate(type = "integer") {
 
     // Multiply integer matrices and measure
     const timeStart = performance.now();
-    result = multiplyMatrices(matrixA, matrixB, innerLoop);
+    result = multiplyMatrices(matrixA, matrixB, real, innerLoop);
     const timeEnd = performance.now();
 
     //Sum time taken for each run
     const timeTaken = timeEnd - timeStart;
 
-    timeArray[run] = timeTaken;
     totalTime += timeTaken;
+    insertBenchmarkRow(tableBody, run, timeTaken);
   }
 
   // Calculate time taken in ms
@@ -128,7 +152,7 @@ function calculate(type = "integer") {
 
   // Print results
 
-  console.table(result);
+  // console.table(result);
   console.log(
     `Integer matrix multiplication took ${
       averageTime / 1000
@@ -137,9 +161,6 @@ function calculate(type = "integer") {
     }s using ${innerLoop} approach.`
   );
 
-  // HTML operations
-  const selector = real ? "real-results" : "integer-results";
-
   insertResultsText(
     `${selector}-text`,
     averageTime,
@@ -147,9 +168,8 @@ function calculate(type = "integer") {
     benchmarkRuns,
     innerLoop
   );
-  insertBenchmarkTableBody(`${selector}-table-body`, timeArray, benchmarkRuns);
-
-  return false;
+  // Enable submit buttons
+  removeAttribute(".submit-results", "disabled");
 }
 
 // HTML functions
@@ -171,18 +191,11 @@ const insertResultsText = (
   }s</b> using ${innerLoop} approach.`;
 };
 
-const insertBenchmarkTableBody = (selector, timeArray, benchmarkRuns) => {
-  const tableBody = document.getElementById(selector);
-  tableBody.innerHTML = "";
-  for (let run = 0; run < benchmarkRuns; run++) {
-    insertBenchmarkRow(tableBody, run, timeArray[run]);
-  }
-};
-
 const insertBenchmarkRow = (tableBody, run, time) => {
   // Insert a row in the table at the last row
   const newRow = tableBody.insertRow();
   newRow.innerHTML = `<td>${run + 1}</td><td>${time / 1000}s</td>`;
+  resolve();
 };
 
 // calculate();
